@@ -1,8 +1,8 @@
 <?php
-include_once 'conBBDD.php'; // Se asume que $pdo ya está configurado correctamente
+include_once '../conBBDD.php'; // Se asume que $pdo ya está configurado correctamente
 
 // Consulta SQL con JOIN para obtener el nombre del país
-$consulta = 'SELECT actor.imagen, actor.nombreActor, pais.nombrePais 
+$consulta = 'SELECT actor.imagen, actor.nombreActor, pais.nombrePais, actor.idActor 
              FROM actor 
              INNER JOIN pais ON actor.nacionalidadActor = pais.idPais';
 
@@ -12,10 +12,13 @@ $resultado = $pdo->query($consulta); // Ejecuta la consulta
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../../css/styles.css">
     <title>Biblioteca</title>
 </head>
 <body>
+    <button ><a href="../../index.php">Volver a inicio</a></button>
+    <button><a href="crearActor.php">Crear Actor</a></button>
+
 <table>
     <th>Imagen</th> 
     <th>Nombre</th>
@@ -28,9 +31,12 @@ $resultado = $pdo->query($consulta); // Ejecuta la consulta
         <td><?php echo htmlspecialchars($row['nombreActor']); ?></td>
         <td><?php echo htmlspecialchars($row['nombrePais']); ?></td>
         <td>
-            <form action="../index.php" method="POST">
-                <input type="submit" value="Acceder">
-            </form>
+            <a href="editarActor.php?id=<?php echo $row['idActor']; ?>" title="Editar">
+                <img src="../../icons/edit-new-icon-22.png" alt="Editar" style="width: 24px; margin-right: 10px;">
+            </a>
+            <a href="borrarActor.php?id=<?php echo $row['idActor']; ?>" title="Eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este actor?');">
+                <img src="../../icons/delete-1-icon.png" alt="Eliminar" style="width: 24px;">
+            </a>
         </td>
     </tr>
 <?php endwhile; ?>

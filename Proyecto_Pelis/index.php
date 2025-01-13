@@ -10,8 +10,8 @@
     <h1>ValorFilms</h1>
     <nav>
         <ul>
-            <li><a href="php/actor.php">Ver Actores</a></li>
-            <li><a href="php/pais.php">Pais</a></li>
+            <li><a href="php/actor/actor.php">Ver Actores</a></li>
+            <li><a href="php/pais/pais.php">Pais</a></li>
         </ul>
     </nav>
 </body>

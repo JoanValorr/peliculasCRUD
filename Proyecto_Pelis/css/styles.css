@@ -5,9 +5,33 @@ body {
     margin: 0;
     padding: 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
+}
+
+/* Botón de volver a inicio */
+button a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
 }
 
 /* Table styling */
@@ -53,39 +77,62 @@ tr:hover {
     transition: all 0.3s ease;
 }
 
-/* Buttons in actions column */
-input[type="submit"] {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-input[type="submit"]:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-}
-
 /* Image styling */
 td img {
-    max-width: 100px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    max-width: 100px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    table {
-        width: 100%;
-    }
-
-    th, td {
-        padding: 10px;
-    }
+td img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
+
+/* Icon actions */
+td a img {
+    width: 24px;
+    margin-right: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+td a img:last-child {
+    margin-right: 0;
+}
+
+td a img:hover {
+    transform: scale(1.2);
+    opacity: 0.8;
+}
+
+/* General body styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fa;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Styling for the page title */
+h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Error message styling */
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
