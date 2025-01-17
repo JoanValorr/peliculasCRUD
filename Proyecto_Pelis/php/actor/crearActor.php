@@ -1,44 +1,42 @@
 <?php
-include_once '../conBBDD.php'; // Este archivo ya debería tener la conexión a la base de datos
+include_once '../conBBDD.php'; // Asegúrate de que este archivo establece correctamente la conexión PDO en $pdo.
+
+$error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Recupera los datos del formulario
-    $nombreActor = $_POST['nombreActor'] ?? null;
-    $nacionalidadActor = $_POST['nacionalidadActor'] ?? null;
-    $imagenActor = $_POST['imagenActor'] ?? null;
-
-    // Depuración: muestra los valores recibidos para asegurarte de que la URL se está recibiendo
-    echo "Nombre Actor: " . htmlspecialchars($nombreActor) . "<br>";
-    echo "Imagen Actor: " . htmlspecialchars($imagenActor) . "<br>";
-    echo "Nacionalidad Actor: " . htmlspecialchars($nacionalidadActor) . "<br>";
- 
+    $nombreActor = $_POST['nombreActor'] ?? '';
+    $nacionalidadActor = $_POST['nacionalidadActor'] ?? '';
+    $imagenActor = $_POST['imagenActor'] ?? '';
 
     if (empty($nombreActor) || empty($nacionalidadActor) || empty($imagenActor)) {
-        $error = "No has rellenado todos los campos.";
+        $error = 'Por favor, completa todos los campos.';
     } else {
         try {
-            // Escapa los valores para evitar inyecciones SQL
-            $nombreActorEscapado = htmlspecialchars($nombreActor);
-            $nacionalidadActorEscapada = htmlspecialchars($nacionalidadActor);
-            $imagenActorEscapada = htmlspecialchars($imagenActor);
+            $stmt = $pdo->prepare("INSERT INTO actor (nombreActor, nacionalidadActor, imagen) VALUES (:nombreActor, :nacionalidadActor, :imagen)");
+            $stmt->bindParam(':nombreActor', $nombreActor);
+            $stmt->bindParam(':nacionalidadActor', $nacionalidadActor, PDO::PARAM_INT);
+            $stmt->bindParam(':imagen', $imagenActor);
 
-            // Inserta en la base de datos usando PDO
-            $queryInsert = "INSERT INTO actor (nombreActor, nacionalidadActor, imagen) VALUES (:nombreActor, :nacionalidadActor, :imagenActor)";
-            $stmt = $pdo->prepare($queryInsert);
-            $stmt->bindParam(':nombreActor', $nombreActorEscapado, PDO::PARAM_STR);
-            $stmt->bindParam(':nacionalidadActor', $nacionalidadActorEscapada, PDO::PARAM_STR);
-            $stmt->bindParam(':imagenActor', $imagenActorEscapada, PDO::PARAM_STR);
-            $stmt->execute();
-
-            // Redirige al listado de actores después de insertar
-            header('Location: actor.php');
-            exit;
+            if ($stmt->execute()) {
+                header('Location: actor.php');
+                exit;
+            } else {
+                $error = 'Hubo un problema al crear el actor.';
+            }
         } catch (PDOException $e) {
-            $error = "Error al insertar el actor: " . $e->getMessage();
+            $error = 'Error en la base de datos: ' . $e->getMessage();
         }
     }
 }
 
+// Obtener las nacionalidades desde la base de datos
+$nacionalidades = [];
+try {
+    $stmt = $pdo->query("SELECT idPais, nombrePais FROM pais");
+    $nacionalidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $error = 'Error al obtener las nacionalidades: ' . $e->getMessage();
+}
 ?>
 
 <!DOCTYPE html>
@@ -61,13 +59,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <form action="crearActor.php" method="POST">
         <label for="nombreActor">Nombre del Actor:</label>
-        <input type="text" id="nombreActor" name="nombreActor">
+        <input type="text" id="nombreActor" name="nombreActor" value="<?php echo htmlspecialchars($nombreActor ?? ''); ?>">
 
         <label for="nacionalidadActor">Nacionalidad:</label>
-        <input type="text" id="nacionalidadActor" name="nacionalidadActor">
+        <select id="nacionalidadActor" name="nacionalidadActor">
+            <option value="">Seleccione una nacionalidad</option>
+            <?php foreach ($nacionalidades as $nacionalidad) : ?>
+                <option value="<?php echo $nacionalidad['idPais']; ?>">
+                    <?php echo htmlspecialchars($nacionalidad['nombrePais']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
 
         <label for="imagenActor">Imagen (URL):</label>
-        <input type="text" id="imagenActor" name="imagenActor">
+        <input type="text" id="imagenActor" name="imagenActor" value="<?php echo htmlspecialchars($imagenActor ?? ''); ?>">
 
         <button type="submit">Crear Actor</button>
     </form>

@@ -1,70 +1,86 @@
-
-/* Form container */
-form {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* General form styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
     padding: 20px;
-    width: 100%;
-    max-width: 500px;
+    display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
 }
 
-/* Form label styling */
-label {
-    font-size: 1rem;
+form {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+h1 {
+    text-align: center;
     color: #333;
-    display: block;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
 }
 
-/* Input field styling */
-input[type="text"] {
-    width: 80%;
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input[type="text"], select {
+    width: 100%;
     padding: 10px;
-    font-size: 1rem;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-bottom: 20px;
-    background-color: #f9f9f9;
+    font-size: 14px;
+    box-sizing: border-box;
 }
 
-/* Button styling */
-button[type="submit"] {
-    background-color: #28a745;
+button {
+    background-color: #5cb85c;
     color: white;
-    padding: 10px 20px;
+    font-size: 16px;
+    padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
 }
 
-/* Button hover effect */
-button[type="submit"]:hover {
-    background-color: #218838;
+button:hover {
+    background-color: #4cae4c;
+}
+
+/* Error message */
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
 /* Back button container */
 .backContainer {
-    margin-top: 20px;
+    margin-top: 15px;
     text-align: center;
 }
 
-/* Back button styling */
-a.btn {
+.backContainer .btn {
+    color: #007bff;
     text-decoration: none;
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
+    font-weight: bold;
 }
 
-/* Back button hover effect */
-a.btn:hover {
-    background-color: #0056b3;
+.backContainer .btn:hover {
+    text-decoration: underline;
 }
