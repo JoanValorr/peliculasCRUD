@@ -8,8 +8,7 @@ body {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    user-select: none;
-}
+  }
 
 /* Botón de volver a inicio */
 button a {
@@ -137,3 +136,23 @@ h1 {
     margin-bottom: 20px;
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.pagination a {
+    padding: 10px;
+    margin: 0 5px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    color: #333;
+}
+.pagination a:hover {
+    background-color: #f1f1f1;
+}
+.pagination .active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}

@@ -1,0 +1,256 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Encabezado */
+h1, h2 {
+    text-align: center;
+    color: #333;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+
+/* Estilos de navegación */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #007bb5; /* Azul oscuro al pasar el mouse */
+    color: white;
+}
+
+/* Formulario de edición del libro */
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+form h2 {
+    margin-top: 0;
+    color: #333;
+    text-align: center;
+}
+
+form label {
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+}
+
+form input[type="text"],
+form input[type="submit"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+form input[type="text"]:focus {
+    border-color: #007bb5; /* Borde azul al enfocarse */
+    outline: none;
+}
+
+form input[type="submit"],
+a.btn {
+    background-color: #008CBA; /* Azul */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+form input[type="submit"]:hover,
+a.btn:hover {
+    background-color: #007bb5; /* Azul oscuro al pasar el mouse */
+}
+
+a.btn {
+    display: inline-block;
+    color: #fff;
+}
+
+/* Estilos para mensajes y alertas */
+.alert {
+    color: #d8000c;
+    background-color: #ffd2d2;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.btn-edit {
+    background-color: #4CAF50; /* Verde agradable */
+    color: white; /* Texto blanco */
+    border: none; /* Sin bordes */
+    padding: 10px 20px; /* Espaciado interno */
+    text-align: center; /* Centrado del texto */
+    text-decoration: none; /* Sin subrayado */
+    font-size: 16px; /* Tamaño del texto */
+    margin: 5px 2px; /* Márgenes */
+    cursor: pointer; /* Cursor tipo mano */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s; /* Suavizado de cambio de color */
+}
+
+.btn-edit:hover {
+    background-color: #45a049; /* Verde más oscuro al pasar el ratón */
+}
+
+/* Estilo para el botón de "Volver" */
+a {
+    text-decoration: none;
+}
+
+button {
+    background-color: #007BFF; /* Color azul */
+    color: white; /* Texto blanco */
+    padding: 10px 15px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de fuente */
+    cursor: pointer; /* Cursor tipo mano */
+    transition: background-color 0.3s ease; /* Suavizado en el cambio de color */
+}
+
+button:hover {
+    background-color: #0056b3; /* Cambio de color al pasar el ratón */
+}
+
+button:focus {
+    outline: none; /* Eliminar el borde de enfoque */
+}
+
+
+/* Estilo para el contenedor del formulario */
+form {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para las etiquetas */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Estilo para los inputs y selects */
+input[type="text"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+/* Estilo cuando el input o select está enfocado */
+input[type="text"]:focus,
+select:focus {
+    border-color: #4CAF50; /* Color de borde al hacer foco */
+    outline: none;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Sombra al hacer foco */
+}
+
+/* Estilo para el select */
+select {
+    appearance: none; /* Elimina la flecha por defecto en algunos navegadores */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 12 12%22 width=%2212%22 height=%2212%22%3E%3Cpath d=%22M12 3l-6 6L0 3%22 fill=%22none%22 stroke=%22%23333%22 stroke-width=%222%22/%3E%3C/svg%3E'); /* Flecha personalizada */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+/* Estilo para las opciones dentro del select */
+select option {
+    padding: 10px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+}
+
+/* Estilo para el botón de enviar */
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+/* Cambio de color al hacer hover sobre el botón */
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Estilo para el enlace "Volver" */
+a.btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #ddd;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+/* Cambio de color al hacer hover sobre el enlace "Volver" */
+a.btn:hover {
+    background-color: #ccc;
+}

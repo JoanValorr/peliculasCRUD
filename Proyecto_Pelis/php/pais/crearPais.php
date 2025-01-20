@@ -1,31 +1,9 @@
 <?php
-include_once '../conBBDD.php'; // Este archivo ya debería tener la conexión a la base de datos
 
-// Verifica si el formulario fue enviado
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nombrePais = $_POST['nombrePais'] ?? null; // Obtiene el valor o null si no existe
+include_once '../conBBDD.php'; // Conexión a la base de datos
 
-    if (empty($nombrePais)) {
-        $error = "No has rellenado todos los campos.";
-    } else {
-        try {
-            // Escapa el valor para evitar inyecciones SQL (aunque PDO generalmente lo maneja automáticamente con prepared statements)
-            $nombrePaisEscapado = htmlspecialchars($nombrePais);
+$nombrePais = $_POST['nombrePais'] ?? null; // Recoge el nombre del país del formulario
 
-            // Inserta en la base de datos usando PDO
-            $queryInsert = "INSERT INTO pais (nombrePais) VALUES (:nombrePais)";
-            $stmt = $pdo->prepare($queryInsert);
-            $stmt->bindParam(':nombrePais', $nombrePaisEscapado, PDO::PARAM_STR);
-            $stmt->execute();
-
-            // Redirige al listado de países después de insertar
-            header('Location: pais.php');
-            exit;
-        } catch (PDOException $e) {
-            $error = "Error al insertar el país: " . $e->getMessage();
-        }
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -39,18 +17,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <h1>Crear Nuevo País</h1>
-
-    <?php if (!empty($error)) : ?>
-        <div class="error-message">
-            <p><?php echo htmlspecialchars($error); ?></p>
-        </div>
-    <?php endif; ?>
-
     <form action="crearPais.php" method="POST">
         <label for="nombrePais">Nombre del País:</label>
-        <input type="text" id="nombrePais" name="nombrePais">
+        <input type="text" id="nombrePais" name="nombrePais" value="<?php echo htmlspecialchars($nombrePais); ?>">
         <button type="submit">Crear País</button>
     </form>
+
+    <?php if ($nombrePais !== null && !empty($nombrePais)) : ?>
+        <?php
+            // Si el campo no está vacío, insertar el nuevo país en la base de datos
+            try {
+                // Consulta SQL sin preparar
+                $queryInsert = "INSERT INTO pais (nombrePais) VALUES ('$nombrePais')";
+                $resultInsert = $pdo->exec($queryInsert); // Uso de exec() para consultas que no retornan datos
+
+                if ($resultInsert) {
+                    echo "<h2>País creado exitosamente.</h2>";
+                    header('Location: pais.php');
+                    exit(); // Detener el script después de redirigir
+                }
+            } catch (PDOException $e) {
+                echo "<h2>Hubo un error al crear el país: " . $e->getMessage() . "</h2>";
+            }
+        ?>
+    <?php elseif ($_SERVER['REQUEST_METHOD'] === 'POST') : ?>
+        <h2>No has rellenado el nombre del país.</h2>
+    <?php endif ?>
 
     <div class="backContainer">
         <a class="btn" href="pais.php">Volver a la lista de países</a>
