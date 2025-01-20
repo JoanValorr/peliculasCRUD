@@ -1,8 +1,8 @@
 <?php
 include_once '../conBBDD.php'; // Se asume que $pdo ya está configurado correctamente
 
-// Recupera el id del actor a eliminar
-$id = $_GET['id'] ?? null;
+// Recupera el id del actor a eliminar desde POST
+$id = $_POST['id'] ?? null;
 
 if ($id) {
     // Consulta el actor a eliminar
@@ -20,9 +20,9 @@ if ($id) {
 // Lógica para eliminar el actor si se confirma
 if (isset($_POST['borrarActor'])) {
     $delete_query = "DELETE FROM actor WHERE idActor = :id";
-    $delete_stmt = $pdo->prepare($delete_query);
-    $delete_stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    $delete_stmt->execute();
+    $stmt = $pdo->prepare($delete_query);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute(); // Ejecutar la eliminación
 
     header('Location: actor.php');
     exit;
@@ -44,6 +44,7 @@ if (isset($_POST['borrarActor'])) {
         <div class="confirmDeleteContainer">
             <a class="btn" href="actor.php">Volver</a>
 
+            <!-- Formulario para confirmar la eliminación del actor -->
             <form action="" method="POST">
                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
                 <button type="submit" name="borrarActor" class="confirmDelete">Eliminar</button>

@@ -28,7 +28,7 @@ $resultado = $pdo->query($consulta); // Ejecuta la consulta directamente
                         <img src="../../icons/edit-new-icon-22.png" alt="Editar" style="width: 24px; margin-right: 10px;">
                     </a>
                     <!-- Enlace para eliminar país, pasando el id al archivo borrarPais.php -->
-                    <a href="borrarPais.php?id=<?php echo $row['idPais']; ?>" title="Eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este país?');">
+                    <a href="borrarPais.php?id=<?php echo $row['idPais']; ?>" title="Eliminar">
                         <img src="../../icons/delete-1-icon.png" alt="Eliminar" style="width: 24px;">
                     </a>
                 </td>

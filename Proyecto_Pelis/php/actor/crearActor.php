@@ -6,6 +6,8 @@ $nacionalidadActor = $_POST['nacionalidadActor'] ?? null;
 $imagenActor = $_POST['imagenActor'] ?? null;
 $error = '';
 
+// Establecer imagen predeterminada si no se proporciona una
+$imagenActor = $imagenActor ?: "../images/avatar.png";  // Ruta de la imagen predeterminada
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +48,7 @@ $error = '';
         </select>
 
         <label for="imagenActor">Imagen (URL):</label>
-        <input type="text" id="imagenActor" name="imagenActor" value="<?php echo htmlspecialchars($imagenActor); ?>">
+        <input type="text" id="imagenActor" name="imagenActor" >
 
         <button type="submit">Crear Actor</button>
     </form>
@@ -54,7 +56,7 @@ $error = '';
     <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') : ?>
         <?php
             // Validación de campos
-            if (empty($nombreActor) || empty($nacionalidadActor) || empty($imagenActor)) {
+            if (empty($nombreActor) || empty($nacionalidadActor)) {
                 echo "<h2>Por favor, completa todos los campos.</h2>";
             } else {
                 try {

@@ -1,16 +1,12 @@
 <?php
 include_once '../conBBDD.php'; // Se asume que $pdo ya está configurado correctamente
 
-// Verificar si 'id' está definido en $_GET
-if (isset($_GET['id'])) {
-    $idActor = $_GET['id'];
+// Verificar si 'id' está definido en $_POST
+if (isset($_POST['id'])) {
+    $idActor = $_POST['id'];
 
-    // Preparar y ejecutar la consulta con PDO
-    $stmt = $pdo->prepare("SELECT * FROM actor WHERE idActor = :idActor");
-    $stmt->bindParam(':idActor', $idActor, PDO::PARAM_INT);
-    $stmt->execute();
-
-    // Obtener resultados
+    // Ejecutar la consulta directamente para obtener el actor con el id
+    $stmt = $pdo->query("SELECT * FROM actor WHERE idActor = $idActor");
     $tituloActor = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Ver si el actor existe
@@ -45,15 +41,15 @@ try {
 </head>
 <body>
     <div>
-        <form action="editarActor.php?id=<?php echo htmlspecialchars($idActor); ?>" method="POST">
+        <form action="editarActor.php" method="POST">
             <h2>Editando Actor: <?php echo htmlspecialchars($tituloActor['nombreActor']); ?></h2>
             <input type="hidden" name="id" value="<?php echo htmlspecialchars($tituloActor['idActor']); ?>">
             
             <label for="name">Nombre:</label>
-            <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($tituloActor['nombreActor']); ?>" required>
+            <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($tituloActor['nombreActor']); ?>" >
             
             <label for="nacionalidadActor">Nacionalidad:</label>
-            <select id="nacionalidadActor" name="nation" required>
+            <select id="nacionalidadActor" name="nation" >
                 <option value="">Seleccione una nacionalidad</option>
                 <?php foreach ($nacionalidades as $nacionalidad) : ?>
                     <option value="<?php echo $nacionalidad['idPais']; ?>"
@@ -64,7 +60,7 @@ try {
             </select>
             
             <label for="image">URL imagen:</label>
-            <input type="text" id="image" name="image" value="<?php echo htmlspecialchars($tituloActor['imagen']); ?>" required>
+            <input type="text" id="image" name="image" value="<?php echo htmlspecialchars($tituloActor['imagen']); ?>">
             
             <input type="submit" value="Actualizar" name="updateActor">
             <a class="btn" href="actor.php">Volver</a>
@@ -80,13 +76,13 @@ try {
         $id = $_POST['id'];
 
         // Verificar si los campos no están vacíos
-        if (empty($name) || empty($nation) || empty($image)) {
+        if (empty($name) || empty($nation)) {
             echo "<script>alert('Todos los campos son obligatorios');</script>";
         } else {
             // Si no están vacíos, actualizar el actor
             $queryUpdate = "UPDATE actor SET nombreActor = '$name', nacionalidadActor = '$nation', imagen = '$image' WHERE idActor = '$id'";
 
-            // Ejecutar la consulta
+            // Ejecutar la consulta directamente sin bindParam
             $resultUpdate = $pdo->exec($queryUpdate);
 
             if ($resultUpdate) {
@@ -94,7 +90,7 @@ try {
                 echo "<script>window.location.href = 'actor.php';</script>";
                 exit;
             } else {
-                echo "<script>alert('Error al actualizar el actor');</script>";
+                echo "<script>alert('Nada actualizado, actualiza algún campo, o cancela la operación');</script>";
             }
         }
     endif;
