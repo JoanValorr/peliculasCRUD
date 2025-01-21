@@ -11,8 +11,14 @@
     <nav>
         <ul>
             <li><a href="../Proyecto_Pelis/php/actor/actor.php">Ver Actores</a></li>
-            <li><a href="../Proyecto_Pelis/php/pais/pais.php">Pais</a></li>
+            <li><a href="../Proyecto_Pelis/php/pais/pais.php">País</a></li>
         </ul>
     </nav>
+
+    <form action="buscar.php" method="GET">
+        <label for="search">Buscar actor:</label>
+        <input type="text" id="search" name="query" placeholder="busqueda...">
+        <button type="submit">Buscar</button>
+    </form>
 </body>
 </html>

@@ -16,8 +16,8 @@ $resultado = $pdo->query($consulta); // Ejecuta la consulta
     <title>Biblioteca</title>
 </head>
 <body>
-    <button><a href="../../index.php">Volver a inicio</a></button>
-    <button><a href="crearActor.php">Crear Actor</a></button>
+    <button class = "action"><a href="../../index.php">Volver a inicio</a></button>
+    <button class = "action"><a href="crearActor.php">Crear Actor</a></button>
 
     <table>
         <thead>
@@ -39,9 +39,10 @@ $resultado = $pdo->query($consulta); // Ejecuta la consulta
                     <form action="editarActor.php" method="POST" style="display:inline;">
                         <input type="hidden" name="id" value="<?php echo $row['idActor']; ?>">
                         <button type="submit" title="Editar">
-                            <img src="../../icons/edit-new-icon-22.png" alt="Editar" style="width: 24px; margin-right: 10px;">
+                        <img src="../../icons/edit-new-icon-22.png" alt="Editar" style="width: 24px; margin-right: 10px;">
                         </button>
                     </form>
+
 
                     <!-- Formulario para eliminar actor -->
                     <form action="borrarActor.php" method="POST" style="display:inline;">

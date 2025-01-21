@@ -6,7 +6,7 @@ $nacionalidadActor = $_POST['nacionalidadActor'] ?? null;
 $imagenActor = $_POST['imagenActor'] ?? null;
 $error = '';
 
-// Establecer imagen predeterminada si no se proporciona una
+// Establecer imagen predeterminada si no se proporciona una url
 $imagenActor = $imagenActor ?: "../images/avatar.png";  // Ruta de la imagen predeterminada
 ?>
 
@@ -30,7 +30,6 @@ $imagenActor = $imagenActor ?: "../images/avatar.png";  // Ruta de la imagen pre
             <option value="">Seleccione una nacionalidad</option>
             <?php
                 // Obtener las nacionalidades desde la base de datos
-                $nacionalidades = [];
                 try {
                     $stmt = $pdo->query("SELECT idPais, nombrePais FROM pais");
                     $nacionalidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -59,24 +58,13 @@ $imagenActor = $imagenActor ?: "../images/avatar.png";  // Ruta de la imagen pre
             if (empty($nombreActor) || empty($nacionalidadActor)) {
                 echo "<h2>Por favor, completa todos los campos.</h2>";
             } else {
-                try {
                     // Inserción de datos en la base de datos
-                    $queryInsert = "INSERT INTO actor (nombreActor, nacionalidadActor, imagen) 
-                                    VALUES ('$nombreActor', '$nacionalidadActor', '$imagenActor')";
+                    $queryInsert = "INSERT INTO actor (nombreActor, nacionalidadActor, imagen) VALUES ('$nombreActor', '$nacionalidadActor', '$imagenActor')";
                     $resultInsert = $pdo->exec($queryInsert); // Ejecutar consulta sin preparación
-
-                    if ($resultInsert) {
-                        echo "<h2>Actor creado exitosamente.</h2>";
-                        header('Location: actor.php'); // Redirigir a la página de actores
-                        exit(); // Detener el script después de redirigir
-                    }
-                } catch (PDOException $e) {
-                    echo "<h2>Hubo un error al crear el actor: " . $e->getMessage() . "</h2>";
-                }
-            }
+                    header('Location: actor.php'); // Redirigir a la página de actores
+                    exit;}
         ?>
     <?php endif; ?>
-
     <div class="backContainer">
         <a class="btn" href="actor.php">Volver a la lista de actores</a>
     </div>

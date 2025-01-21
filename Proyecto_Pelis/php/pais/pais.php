@@ -14,8 +14,8 @@ $resultado = $pdo->query($consulta); // Ejecuta la consulta directamente
     <link rel="stylesheet" href="../../css/styles.css">
 </head>
 <body>
-    <button><a href="../../index.php">Volver a inicio</a></button>
-    <button><a href="crearPais.php">Crear País</a></button>
+    <button class="action"><a href="../../index.php">Volver a inicio</a></button>
+    <button class="action"><a href="crearPais.php">Crear País</a></button>
 
     <table>
         <th>Pais</th>

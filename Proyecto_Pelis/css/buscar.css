@@ -1,0 +1,49 @@
+/* Imagen del actor */
+li img {
+    border-radius: 20%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* Nombre del actor */
+strong {
+    color: #333;
+    font-weight: bold;
+}
+
+li .actor-name {
+    font-size: 18px;
+    color: #555;
+}
+
+/* País del actor */
+li .actor-country {
+    font-size: 14px;
+    color: #888;
+}
+
+/* Enlace de volver */
+a.btn {
+    display: inline-block;
+    margin: 20px auto;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+a.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Mensaje cuando no hay resultados */
+.no-results {
+    text-align: center;
+    font-size: 18px;
+    color: #ff6347;
+    margin-top: 20px;
+}

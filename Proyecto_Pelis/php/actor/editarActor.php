@@ -21,8 +21,6 @@ if (isset($_POST['id'])) {
     exit;
 }
 
-// Obtener las nacionalidades
-$nacionalidades = [];
 try {
     $stmt = $pdo->query("SELECT idPais, nombrePais FROM pais");
     $nacionalidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -46,10 +44,10 @@ try {
             <input type="hidden" name="id" value="<?php echo htmlspecialchars($tituloActor['idActor']); ?>">
             
             <label for="name">Nombre:</label>
-            <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($tituloActor['nombreActor']); ?>" >
+            <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($tituloActor['nombreActor']); ?>">
             
             <label for="nacionalidadActor">Nacionalidad:</label>
-            <select id="nacionalidadActor" name="nation" >
+            <select id="nacionalidadActor" name="nation">
                 <option value="">Seleccione una nacionalidad</option>
                 <?php foreach ($nacionalidades as $nacionalidad) : ?>
                     <option value="<?php echo $nacionalidad['idPais']; ?>"
@@ -75,14 +73,16 @@ try {
         $image = $_POST['image'];
         $id = $_POST['id'];
 
+        // Establecer imagen predeterminada si no se proporciona una
+        $defaultImage = "../images/avatar.png";
+        $image = !empty($image) ? $image : $defaultImage;
+
         // Verificar si los campos no están vacíos
         if (empty($name) || empty($nation)) {
             echo "<script>alert('Todos los campos son obligatorios');</script>";
         } else {
             // Si no están vacíos, actualizar el actor
             $queryUpdate = "UPDATE actor SET nombreActor = '$name', nacionalidadActor = '$nation', imagen = '$image' WHERE idActor = '$id'";
-
-            // Ejecutar la consulta directamente sin bindParam
             $resultUpdate = $pdo->exec($queryUpdate);
 
             if ($resultUpdate) {

@@ -18,7 +18,6 @@ button a {
 }
 
 button {
-    background-color: #007bff;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -29,7 +28,11 @@ button {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-button:hover {
+.action{
+    background-color: #007bff;
+}
+
+.action:hover {
     background-color: #0056b3;
     transform: translateY(-2px);
 }

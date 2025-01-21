@@ -1,8 +1,8 @@
 <?php
 include_once '../conBBDD.php'; // Se incluye el archivo para conectar con la base de datos
 
-// Recupera el id del país a eliminar desde la URL
-$id = $_GET['id'] ?? null; // Si no se pasa el id en la URL, se asigna null
+// Recupera el id del país desde el formulario enviado por POST
+$id = isset($_POST['id']) ? intval($_POST['id']) : null;
 
 if ($id) {
     // Consulta SQL para obtener los detalles del país con el ID proporcionado
@@ -23,21 +23,19 @@ if ($id) {
         // Si hay actores asociados, mostramos un mensaje de error
         $errorMessage = "No se puede eliminar el país porque hay actores asociados a él.";
     }
-} else {
-    // Si no se pasó un id, redirigimos a la página de países
-    header('Location: pais.php');
-    exit;
-}
-
-// Lógica para eliminar el país si no hay actores asociados
-if (isset($_POST['borrarPais']) && !$errorMessage) {
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['borrarPais'])) {
     // Si se confirma la eliminación y no hay error, se elimina el país de la base de datos
+    $idToDelete = intval($_POST['borrarPais']);
     $delete_query = "DELETE FROM pais WHERE idPais = :id"; // Consulta para eliminar el país
     $delete_stmt = $pdo->prepare($delete_query); // Preparamos la consulta
-    $delete_stmt->bindParam(':id', $id, PDO::PARAM_INT); // Vinculamos el parámetro :id con el valor de $id
+    $delete_stmt->bindParam(':id', $idToDelete, PDO::PARAM_INT); // Vinculamos el parámetro :id con el valor de $id
     $delete_stmt->execute(); // Ejecutamos la consulta
 
     // Redirigimos a la página de países después de eliminar
+    header('Location: pais.php');
+    exit;
+} else {
+    // Si no se pasó un id, redirigimos a la página de países
     header('Location: pais.php');
     exit;
 }
@@ -58,7 +56,7 @@ if (isset($_POST['borrarPais']) && !$errorMessage) {
             <h2><?php echo htmlspecialchars($errorMessage); ?></h2>
             <a href="pais.php" class="btn">Volver</a>
         <?php else: ?>
-            <h2>Estás por eliminar el país "<?php echo htmlspecialchars($pais['nombrePais']); ?>". ¿Estás seguro de que quieres continuar?</h2>
+            <h2>Estás a punto de eliminar el país "<?php echo htmlspecialchars($pais['nombrePais']); ?>". ¿Estás seguro de que quieres continuar?</h2>
 
             <div class="confirmDeleteContainer">
                 <!-- Volver a la lista de países -->
@@ -66,8 +64,8 @@ if (isset($_POST['borrarPais']) && !$errorMessage) {
 
                 <!-- Formulario para confirmar la eliminación -->
                 <form action="" method="POST">
-                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
-                    <button type="submit" name="borrarPais" class="confirmDelete">Eliminar</button>
+                    <input type="hidden" name="borrarPais" value="<?php echo htmlspecialchars($id); ?>">
+                    <button type="submit" class="confirmDelete">Eliminar</button>
                 </form>
             </div>
         <?php endif; ?>
