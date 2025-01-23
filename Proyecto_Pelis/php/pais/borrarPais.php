@@ -1,41 +1,46 @@
 <?php
-include_once '../conBBDD.php'; // Se incluye el archivo para conectar con la base de datos
+include_once '../conBBDD.php'; // Se asume que $pdo ya está configurado correctamente
 
-// Recupera el id del país desde el formulario enviado por POST
-$id = isset($_POST['id']) ? intval($_POST['id']) : null;
+// Recupera el id del país desde GET o POST
+$id = $_GET['id'] ?? $_POST['id'] ?? null;
 
 if ($id) {
-    // Consulta SQL para obtener los detalles del país con el ID proporcionado
+    // Consulta el país a eliminar
     $query = "SELECT * FROM pais WHERE idPais = :id";
-    $stmt = $pdo->prepare($query); // Preparamos la consulta SQL
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT); // Vinculamos el parámetro :id con el valor de $id
-    $stmt->execute(); // Ejecutamos la consulta
-    $pais = $stmt->fetch(PDO::FETCH_ASSOC); // Obtenemos los resultados de la consulta como un array asociativo
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $pais = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Verificar si existen actores asociados al país
-    $checkActorsQuery = "SELECT COUNT(*) FROM actor WHERE nacionalidadActor = :id";
-    $checkActorsStmt = $pdo->prepare($checkActorsQuery); // Preparamos la consulta para contar actores
-    $checkActorsStmt->bindParam(':id', $id, PDO::PARAM_INT); // Vinculamos el parámetro :id con el valor de $id
-    $checkActorsStmt->execute(); // Ejecutamos la consulta
-    $actorCount = $checkActorsStmt->fetchColumn(); // Obtenemos el número de actores asociados al país
+    if ($pais) {
+        // Verifica si hay actores asociados al país
+        $actorQuery = "SELECT COUNT(*) FROM actor WHERE nacionalidadActor = :id";
+        $actorStmt = $pdo->prepare($actorQuery);
+        $actorStmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $actorStmt->execute();
+        $actorCount = $actorStmt->fetchColumn();
 
-    if ($actorCount > 0) {
-        // Si hay actores asociados, mostramos un mensaje de error
-        $errorMessage = "No se puede eliminar el país porque hay actores asociados a él.";
+        if ($actorCount > 0) {
+            // Si hay actores asociados, mostramos un mensaje de error
+            $errorMessage = "No se puede eliminar el país porque hay actores asociados a él.";
+        } elseif (isset($_POST['borrarPais'])) {
+            // Si no hay actores asociados y se confirma la eliminación
+            $delete_query = "DELETE FROM pais WHERE idPais = :id";
+            $stmt = $pdo->prepare($delete_query);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute(); // Ejecutar la eliminación
+
+            // Redirigir tras eliminar
+            header('Location: pais.php?mensaje=El país ha sido eliminado correctamente.');
+            exit;
+        }
+    } else {
+        // Redirigir si el país no existe
+        header('Location: pais.php');
+        exit;
     }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['borrarPais'])) {
-    // Si se confirma la eliminación y no hay error, se elimina el país de la base de datos
-    $idToDelete = intval($_POST['borrarPais']);
-    $delete_query = "DELETE FROM pais WHERE idPais = :id"; // Consulta para eliminar el país
-    $delete_stmt = $pdo->prepare($delete_query); // Preparamos la consulta
-    $delete_stmt->bindParam(':id', $idToDelete, PDO::PARAM_INT); // Vinculamos el parámetro :id con el valor de $id
-    $delete_stmt->execute(); // Ejecutamos la consulta
-
-    // Redirigimos a la página de países después de eliminar
-    header('Location: pais.php');
-    exit;
 } else {
-    // Si no se pasó un id, redirigimos a la página de países
+    // Redirigir si no se pasó un id
     header('Location: pais.php');
     exit;
 }
@@ -51,23 +56,23 @@ if ($id) {
 </head>
 <body>
     <div class="container">
-        <!-- Si hay un error (actores asociados), mostramos el mensaje de error -->
-        <?php if (isset($errorMessage)): ?>
+        <?php if (!empty($errorMessage)): ?>
             <h2><?php echo htmlspecialchars($errorMessage); ?></h2>
             <a href="pais.php" class="btn">Volver</a>
-        <?php else: ?>
-            <h2>Estás a punto de eliminar el país "<?php echo htmlspecialchars($pais['nombrePais']); ?>". ¿Estás seguro de que quieres continuar?</h2>
-
+        <?php elseif (!empty($pais)): ?>
+            <h2>Estás por eliminar el país "<?php echo htmlspecialchars($pais['nombrePais']); ?>". ¿Estás seguro de que quieres continuar?</h2>
             <div class="confirmDeleteContainer">
-                <!-- Volver a la lista de países -->
                 <a class="btn" href="pais.php">Volver</a>
 
-                <!-- Formulario para confirmar la eliminación -->
+                <!-- Formulario para confirmar la eliminación del país -->
                 <form action="" method="POST">
-                    <input type="hidden" name="borrarPais" value="<?php echo htmlspecialchars($id); ?>">
-                    <button type="submit" class="confirmDelete">Eliminar</button>
+                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
+                    <button type="submit" name="borrarPais" class="confirmDelete">Eliminar</button>
                 </form>
             </div>
+        <?php else: ?>
+            <h2>No se ha encontrado el país especificado.</h2>
+            <a href="pais.php" class="btn">Volver</a>
         <?php endif; ?>
     </div>
 </body>
